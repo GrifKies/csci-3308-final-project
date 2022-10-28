@@ -1,0 +1,38 @@
+<%- include('../partials/header'); -%>
+<%- include('../partials/menu') %>
+<body id ="body">
+  <main>
+    <div class="container-lg" style="margin-top: 2%">
+      <div class="card-columns" id="insert_here">  
+        <script>
+          
+        </script>
+        <script>
+        function hex_to_ascii(str1)
+        {
+          var hex  = str1.toString();
+          var str = '';
+          for (var n = 0; n < hex.length; n += 2) {
+            character = String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+            if(character != 'Ú'){
+              str += character;
+            } 
+          }
+          return str;
+        }
+        function get_data(name, url, img, drink_id, desc){
+            card.innerHTML += "<div class=\"card\" id=\"" + drink_id + "\" style=\"width: 20rem;\"><img src="+ img + " class=\"card-img-top\" alt=\"Cocktail Image\"><div class=\"card-body\"><h4 class=\"card-title\"> " + name + "</h4><h5> Drink Instructions: </h5><p class=\"card-text\">" +  hex_to_ascii(desc) + "</p></div></div>";
+        }
+        <% if (items) { %>
+                  card = document.getElementById("insert_here");
+                  card.innerHTML = "";
+                  <% items.forEach( item => { %>
+                    get_data("<%- item.name %>", "<%- item.url %>", "<%- item.img %>", "<%- item.drink_id %>", "<%- item.drink_desc %>");
+                  <% }); %>
+                <% } %>
+        </script>
+        
+      </div>
+  </main>
+  <%- include('../partials/footer'); -%>
+</body>

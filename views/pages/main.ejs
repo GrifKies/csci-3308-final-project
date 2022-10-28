@@ -1,0 +1,55 @@
+<%- include('../partials/header'); -%>
+<%- include('../partials/menu') %>
+<body id ="body">
+  <main>
+    <div class="" style="background-color: #0f415c">
+      <div class="container-fluid" style="padding: 2%">
+        <form class="" action="javascript:get_feed()" method="post">
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="col-5">
+              <input
+                class="form-control"
+                type="text"
+                id="tag_value"
+                name="cocktail"
+                placeholder="Enter Cocktail Name"
+              />
+            </div>
+            <div class="col-1">
+              <input
+                class="btn btn-light"
+                type="submit"
+                name="Submit"
+                value="Submit"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="confirmModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add to Search History</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to add this drink to your search history?</p>
+          </div>
+          <div class="modal-footer">
+            <a href="#" class="btn btn-primary" id="submit_history"> Add to Search History</a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-lg" style="margin-top: 2%">
+      <div class="card-columns" id="insert_here">  
+      </div>
+  </main>
+  <%- include('../partials/footer'); -%>
+</body>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title><%- my_title %></title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function ascii_to_hexa(str)
+        {
+        var arr1 = [];
+        for (var n = 0, l = str.length; n < l; n ++) 
+          {
+          var hex = Number(str.charCodeAt(n)).toString(16);
+          arr1.push(hex);
+        }
+        return arr1.join('');
+        }
+        function get_feed(){
+            tag = document.getElementById("tag_value").value;
+
+            var url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + tag;
+            $.ajax({
+                url:url,
+                type: 'GET',
+		        dataType: 'json',
+                success: function(result){
+                    card = document.getElementById("insert_here");
+                    card.innerHTML = "";
+                    count = 0
+                    result.drinks.forEach(element => { 
+                        count+=1
+                        if(count > 5){
+                          return;
+                        }
+                        if(element.strDrink) // check to see if it actually has a publically available photo... 
+                          url2  = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=" + element.idDrink
+                          card.innerHTML += "<div class=\"card\" id=\"" + element.idDrink + "\" style=\"width: 20rem;\"><img src="+ element.strDrinkThumb + " class=\"card-img-top\" alt=\"Cocktail Image\"><div class=\"card-body\"><h4 class=\"card-title\"> " + element.strDrink + "</h4><h5> Drink Instructions: </h5><p class=\"card-text\">" +  element.strInstructions + "</p><a href=\"#confirmModal\" data-toggle=\"modal\" class=\"btn btn-primary\" onclick=\"modal_load(\'"+ element.strDrink + "\',\'"+ url2 + "\',\'"+ element.strDrinkThumb +"\',\'"+ element.idDrink +"\',\'"+ ascii_to_hexa(element.strInstructions) + "\')\">Add to Search History</a></div></div>"
+                    });
+                }
+            })
+        }
+
+    </script>
+    <script>
+      
+      function modal_load(name, url, img,  drink_id, desc){
+        var submit_button = document.getElementById("submit_history");
+        submit_button.href = "javascript:modal_submit(\'"+ name + "\',\'"+ url + "\',\'"+ img +"\',\'"+ drink_id +"\',\'"+ desc + "\');";
+      }
+
+      function modal_submit(name, url, img,  drink_id, desc){
+        www = "/add_drink";
+        $.post(www,
+          {
+            name: name,
+            url: url,
+            img: img,
+            drink_id: drink_id,
+            desc: desc
+          },
+          function(response){
+            var submit_button = document.getElementById("submit_history");
+            submit_button.href = "#";
+            location.reload();
+            console.log("success!");
+
+          });
+      }
+    </script>
+  </head>
+  <body></body>
+</html>
